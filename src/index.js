@@ -1,5 +1,6 @@
 import { createInterface } from "readline";
 import process from "process";
+import { getPath } from "./utils/getPath.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -12,6 +13,7 @@ for (const arg of args) {
 }
 
 console.log(`Welcome to the File Manager, ${username}!`);
+console.log(`You are currently in ${getPath()}`);
 
 const rl = createInterface({
   input: process.stdin,
@@ -37,6 +39,7 @@ rl.on("line", (input) => {
     exitProgram();
   } else {
     console.log(`Command received: ${command}`);
+    console.log(`You are currently in ${getPath()}`);
     rl.prompt();
   }
 });
