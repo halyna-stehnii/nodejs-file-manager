@@ -2,6 +2,7 @@ import { createInterface } from "readline";
 import process from "process";
 import { homedir } from "os";
 import { getPath } from "./utils/getPath.js";
+import { up } from "./features/up.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -40,6 +41,9 @@ rl.on("line", (input) => {
 
   if (command === ".exit") {
     exitProgram();
+  } else if (command === "up") {
+    up();
+    rl.prompt();
   } else {
     console.log(`Command received: ${command}`);
     console.log(`You are currently in ${getPath()}`);
