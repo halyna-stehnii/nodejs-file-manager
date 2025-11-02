@@ -3,6 +3,7 @@ import process from "process";
 import { homedir } from "os";
 import { getPath } from "./utils/getPath.js";
 import { up } from "./features/up.js";
+import { cd } from "./features/cd.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -43,6 +44,10 @@ rl.on("line", (input) => {
     exitProgram();
   } else if (command === "up") {
     up();
+    rl.prompt();
+  } else if (command.startsWith("cd ")) {
+    const pathToDirectory = command.substring(3).trim();
+    cd(pathToDirectory);
     rl.prompt();
   } else {
     console.log(`Command received: ${command}`);
