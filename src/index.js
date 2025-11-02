@@ -6,6 +6,7 @@ import { up } from "./features/up.js";
 import { cd } from "./features/cd.js";
 import { ls } from "./features/ls.js";
 import { cat } from "./features/cat.js";
+import { add } from "./features/add.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -57,6 +58,10 @@ rl.on("line", async (input) => {
   } else if (command.startsWith("cat ")) {
     const filePath = command.substring(4).trim();
     await cat(filePath);
+    rl.prompt();
+  } else if (command.startsWith("add ")) {
+    const fileName = command.substring(4).trim();
+    await add(fileName);
     rl.prompt();
   } else {
     console.log(`Command received: ${command}`);
