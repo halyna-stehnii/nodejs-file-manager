@@ -5,6 +5,7 @@ import { getPath } from "./utils/getPath.js";
 import { up } from "./features/up.js";
 import { cd } from "./features/cd.js";
 import { ls } from "./features/ls.js";
+import { cat } from "./features/cat.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -52,6 +53,10 @@ rl.on("line", async (input) => {
     rl.prompt();
   } else if (command === "ls") {
     await ls();
+    rl.prompt();
+  } else if (command.startsWith("cat ")) {
+    const filePath = command.substring(4).trim();
+    await cat(filePath);
     rl.prompt();
   } else {
     console.log(`Command received: ${command}`);
