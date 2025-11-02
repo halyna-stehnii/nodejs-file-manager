@@ -4,6 +4,7 @@ import { homedir } from "os";
 import { getPath } from "./utils/getPath.js";
 import { up } from "./features/up.js";
 import { cd } from "./features/cd.js";
+import { ls } from "./features/ls.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -37,7 +38,7 @@ rl.on("SIGINT", () => {
   exitProgram();
 });
 
-rl.on("line", (input) => {
+rl.on("line", async (input) => {
   const command = input.trim();
 
   if (command === ".exit") {
@@ -48,6 +49,9 @@ rl.on("line", (input) => {
   } else if (command.startsWith("cd ")) {
     const pathToDirectory = command.substring(3).trim();
     cd(pathToDirectory);
+    rl.prompt();
+  } else if (command === "ls") {
+    await ls();
     rl.prompt();
   } else {
     console.log(`Command received: ${command}`);
