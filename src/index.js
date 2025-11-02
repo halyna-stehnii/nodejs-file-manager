@@ -1,5 +1,6 @@
 import { createInterface } from "readline";
 import process from "process";
+import { homedir } from "os";
 import { getPath } from "./utils/getPath.js";
 
 const args = process.argv.slice(2);
@@ -11,6 +12,8 @@ for (const arg of args) {
     break;
   }
 }
+
+process.chdir(homedir());
 
 console.log(`Welcome to the File Manager, ${username}!`);
 console.log(`You are currently in ${getPath()}`);
