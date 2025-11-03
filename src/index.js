@@ -8,6 +8,7 @@ import { ls } from "./features/ls.js";
 import { cat } from "./features/cat.js";
 import { add } from "./features/add.js";
 import { mkdir } from "./features/mkdir.js";
+import { rn } from "./features/rn.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -67,6 +68,18 @@ rl.on("line", async (input) => {
   } else if (command.startsWith("mkdir ")) {
     const directoryName = command.substring(6).trim();
     await mkdir(directoryName);
+    rl.prompt();
+  } else if (command.startsWith("rn ")) {
+    const args = command.substring(3).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both file path and new filename"
+      );
+    } else {
+      const filePath = args[0];
+      const newFilename = args.slice(1).join(" "); // In case filename has spaces
+      await rn(filePath, newFilename);
+    }
     rl.prompt();
   } else {
     console.log(`Command received: ${command}`);
