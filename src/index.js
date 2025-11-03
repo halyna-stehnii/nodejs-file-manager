@@ -11,6 +11,7 @@ import { mkdir } from "./features/mkdir.js";
 import { rn } from "./features/rn.js";
 import { cp } from "./features/cp.js";
 import { mv } from "./features/mv.js";
+import { rm } from "./features/rm.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -105,6 +106,14 @@ rl.on("line", async (input) => {
       const sourceFilePath = args[0];
       const destinationPath = args[1];
       await mv(sourceFilePath, destinationPath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("rm ")) {
+    const filePath = command.substring(3).trim();
+    if (!filePath) {
+      console.log("Operation failed: Please provide a file path");
+    } else {
+      await rm(filePath);
     }
     rl.prompt();
   } else {
