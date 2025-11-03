@@ -122,7 +122,7 @@ rl.on("line", async (input) => {
     osInfo(operation);
     rl.prompt();
   } else {
-    console.log(`Command received: ${command}`);
+    console.log(`Invalid command received: ${command}`);
     console.log(`You are currently in ${getPath()}`);
     rl.prompt();
   }
