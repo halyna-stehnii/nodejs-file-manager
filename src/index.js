@@ -13,6 +13,7 @@ import { cp } from "./features/cp.js";
 import { mv } from "./features/mv.js";
 import { rm } from "./features/rm.js";
 import { hash } from "./features/hash.js";
+import { compress } from "./features/compress.js";
 import { osInfo } from "./features/os.js";
 
 const args = process.argv.slice(2);
@@ -124,6 +125,18 @@ rl.on("line", async (input) => {
       console.log("Operation failed: Please provide a file path");
     } else {
       await hash(filePath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("compress ")) {
+    const args = command.substring(9).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both source file path and destination path"
+      );
+    } else {
+      const sourceFilePath = args[0];
+      const destinationPath = args[1];
+      await compress(sourceFilePath, destinationPath);
     }
     rl.prompt();
   } else if (command.startsWith("os ")) {
