@@ -12,6 +12,7 @@ import { rn } from "./features/rn.js";
 import { cp } from "./features/cp.js";
 import { mv } from "./features/mv.js";
 import { rm } from "./features/rm.js";
+import { osInfo } from "./features/os.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -115,6 +116,10 @@ rl.on("line", async (input) => {
     } else {
       await rm(filePath);
     }
+    rl.prompt();
+  } else if (command.startsWith("os ")) {
+    const operation = command.substring(3).trim();
+    osInfo(operation);
     rl.prompt();
   } else {
     console.log(`Command received: ${command}`);
