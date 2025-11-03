@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-file-manager",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/halyna-stehnii/nodejs-file-manager#readme",
+  "bugs": {
+    "url": "https://github.com/halyna-stehnii/nodejs-file-manager/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/halyna-stehnii/nodejs-file-manager.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node src/index.js"
+  }
+}

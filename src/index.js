@@ -1,0 +1,166 @@
+import { createInterface } from "readline";
+import process from "process";
+import { homedir } from "os";
+import { getPath } from "./utils/getPath.js";
+import { up } from "./features/up.js";
+import { cd } from "./features/cd.js";
+import { ls } from "./features/ls.js";
+import { cat } from "./features/cat.js";
+import { add } from "./features/add.js";
+import { mkdir } from "./features/mkdir.js";
+import { rn } from "./features/rn.js";
+import { cp } from "./features/cp.js";
+import { mv } from "./features/mv.js";
+import { rm } from "./features/rm.js";
+import { hash } from "./features/hash.js";
+import { compress } from "./features/compress.js";
+import { decompress } from "./features/decompress.js";
+import { osInfo } from "./features/os.js";
+
+const args = process.argv.slice(2);
+let username = "User";
+
+for (const arg of args) {
+  if (arg.startsWith("--username=")) {
+    username = arg.split("=")[1];
+    break;
+  }
+}
+
+process.chdir(homedir());
+
+console.log(`Welcome to the File Manager, ${username}!`);
+console.log(`You are currently in ${getPath()}`);
+
+const rl = createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  prompt: "> ",
+});
+
+const exitProgram = () => {
+  console.log(`Thank you for using File Manager, ${username}, goodbye!`);
+  rl.close();
+  process.exit(0);
+};
+
+rl.on("SIGINT", () => {
+  process.stdout.write("\n");
+  exitProgram();
+});
+
+rl.on("line", async (input) => {
+  const command = input.trim();
+
+  if (command === ".exit") {
+    exitProgram();
+  } else if (command === "up") {
+    up();
+    rl.prompt();
+  } else if (command.startsWith("cd ")) {
+    const pathToDirectory = command.substring(3).trim();
+    cd(pathToDirectory);
+    rl.prompt();
+  } else if (command === "ls") {
+    await ls();
+    rl.prompt();
+  } else if (command.startsWith("cat ")) {
+    const filePath = command.substring(4).trim();
+    await cat(filePath);
+    rl.prompt();
+  } else if (command.startsWith("add ")) {
+    const fileName = command.substring(4).trim();
+    await add(fileName);
+    rl.prompt();
+  } else if (command.startsWith("mkdir ")) {
+    const directoryName = command.substring(6).trim();
+    await mkdir(directoryName);
+    rl.prompt();
+  } else if (command.startsWith("rn ")) {
+    const args = command.substring(3).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both file path and new filename"
+      );
+    } else {
+      const filePath = args[0];
+      const newFilename = args.slice(1).join(" "); // In case filename has spaces
+      await rn(filePath, newFilename);
+    }
+    rl.prompt();
+  } else if (command.startsWith("cp ")) {
+    const args = command.substring(3).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both source file path and destination directory path"
+      );
+    } else {
+      const sourceFilePath = args[0];
+      const destinationPath = args[1];
+      await cp(sourceFilePath, destinationPath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("mv ")) {
+    const args = command.substring(3).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both source file path and destination directory path"
+      );
+    } else {
+      const sourceFilePath = args[0];
+      const destinationPath = args[1];
+      await mv(sourceFilePath, destinationPath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("rm ")) {
+    const filePath = command.substring(3).trim();
+    if (!filePath) {
+      console.log("Operation failed: Please provide a file path");
+    } else {
+      await rm(filePath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("hash ")) {
+    const filePath = command.substring(5).trim();
+    if (!filePath) {
+      console.log("Operation failed: Please provide a file path");
+    } else {
+      await hash(filePath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("compress ")) {
+    const args = command.substring(9).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both source file path and destination path"
+      );
+    } else {
+      const sourceFilePath = args[0];
+      const destinationPath = args[1];
+      await compress(sourceFilePath, destinationPath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("decompress ")) {
+    const args = command.substring(11).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both source file path and destination path"
+      );
+    } else {
+      const sourceFilePath = args[0];
+      const destinationPath = args[1];
+      await decompress(sourceFilePath, destinationPath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("os ")) {
+    const operation = command.substring(3).trim();
+    osInfo(operation);
+    rl.prompt();
+  } else {
+    console.log(`Invalid command received: ${command}`);
+    console.log(`You are currently in ${getPath()}`);
+    rl.prompt();
+  }
+});
+
+rl.prompt();
