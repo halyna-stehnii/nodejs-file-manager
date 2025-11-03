@@ -9,6 +9,7 @@ import { cat } from "./features/cat.js";
 import { add } from "./features/add.js";
 import { mkdir } from "./features/mkdir.js";
 import { rn } from "./features/rn.js";
+import { cp } from "./features/cp.js";
 
 const args = process.argv.slice(2);
 let username = "User";
@@ -79,6 +80,18 @@ rl.on("line", async (input) => {
       const filePath = args[0];
       const newFilename = args.slice(1).join(" "); // In case filename has spaces
       await rn(filePath, newFilename);
+    }
+    rl.prompt();
+  } else if (command.startsWith("cp ")) {
+    const args = command.substring(3).trim().split(" ");
+    if (args.length < 2) {
+      console.log(
+        "Operation failed: Please provide both source file path and destination directory path"
+      );
+    } else {
+      const sourceFilePath = args[0];
+      const destinationPath = args[1];
+      await cp(sourceFilePath, destinationPath);
     }
     rl.prompt();
   } else {
