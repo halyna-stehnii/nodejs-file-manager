@@ -12,6 +12,7 @@ import { rn } from "./features/rn.js";
 import { cp } from "./features/cp.js";
 import { mv } from "./features/mv.js";
 import { rm } from "./features/rm.js";
+import { hash } from "./features/hash.js";
 import { osInfo } from "./features/os.js";
 
 const args = process.argv.slice(2);
@@ -115,6 +116,14 @@ rl.on("line", async (input) => {
       console.log("Operation failed: Please provide a file path");
     } else {
       await rm(filePath);
+    }
+    rl.prompt();
+  } else if (command.startsWith("hash ")) {
+    const filePath = command.substring(5).trim();
+    if (!filePath) {
+      console.log("Operation failed: Please provide a file path");
+    } else {
+      await hash(filePath);
     }
     rl.prompt();
   } else if (command.startsWith("os ")) {
